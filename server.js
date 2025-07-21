@@ -13,16 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 정적 파일 서빙 설정 (프로덕션 환경 최적화)
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('.', {
-        maxAge: '1d',
-        etag: true,
-        lastModified: true
-    }));
-} else {
-    app.use(express.static('.'));
-}
+// 정적 파일 서빙 설정 (public 폴더를 기준으로 함)
+app.use(express.static('public'));
+
 
 // 파일 업로드 설정
 const storage = multer.diskStorage({
@@ -163,7 +156,7 @@ app.get('/health', (req, res) => {
 
 // 404 에러 핸들링
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'index.html'));
+    res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // 전역 에러 핸들링
