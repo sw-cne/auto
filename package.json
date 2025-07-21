@@ -1,0 +1,37 @@
+{
+  "name": "smart-measurement-website",
+  "version": "1.0.0",
+  "description": "(주)스마트계측 홈페이지",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'No build step required'",
+    "postinstall": "echo 'Post-install complete'"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "스마트계측",
+    "견적의뢰",
+    "이메일"
+  ],
+  "author": "undefined (주)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://port-0-node-express-md2br0ble6279541.sel5.cloudtype.app"
+  }
+}
