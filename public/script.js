@@ -1,53 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all functions
     initMobileNav();
-    initScrollAnimations();
-    initContactForm();
     initSmoothScrolling();
     initNavbarScroll();
-    initLocationMap(); 
+    initScrollAnimations();
+    initContactForm();
+    initLocationMap();
+    startHeroBgSlider();
 });
 
-// Mobile Navigation
 function initMobileNav() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    hamburger.addEventListener('click', function() {
+    hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
-    });
+    document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+    }));
 }
 
-// Smooth Scrolling for Navigation Links
 function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 80;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
                 window.scrollTo({
-                    top: offsetTop,
+                    top: targetElement.offsetTop - 70,
                     behavior: 'smooth'
                 });
             }
@@ -55,129 +37,123 @@ function initSmoothScrolling() {
     });
 }
 
-// Navbar Scroll Effect
 function initNavbarScroll() {
     const navbar = document.querySelector('.navbar');
-
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > 50) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            navbar.style.boxShadow = 'none';
+            navbar.classList.remove('scrolled');
         }
     });
 }
 
-// Scroll Animations
 function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animate-fade-in-up');
-                observer.unobserve(entry.target);
+                entry.target.classList.add('visible');
             }
         });
-    }, observerOptions);
-
-    const animateElements = document.querySelectorAll('.service-card, .feature, .request-card');
-    animateElements.forEach(el => {
-        observer.observe(el);
-    });
-
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        heroContent.classList.add('animate-fade-in-left');
-    }
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.service-card, .request-card').forEach(el => observer.observe(el));
 }
 
-// Contact Form Handling
 function initContactForm() {
-    const contactForm = document.getElementById('contactForm');
+    const form = document.getElementById('contactForm');
     const formStatus = document.getElementById('form-status');
     const phoneInput = document.getElementById('phone');
 
-    if (phoneInput) {
-        phoneInput.addEventListener('keyup', function(e) {
-            let value = e.target.value.replace(/[^0-9]/g, '');
-            if (value.length > 11) {
-                value = value.substring(0, 11);
-            }
-            let formattedValue = '';
-            if (value.length < 4) {
-                formattedValue = value;
-            } else if (value.length < 8) {
-                formattedValue = `${value.substring(0, 3)}-${value.substring(3)}`;
-            } else {
-                formattedValue = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}`;
-            }
-            e.target.value = formattedValue;
-        });
-    }
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
+    phoneInput.addEventListener('keyup', (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value.length > 11) value = value.substring(0, 11);
+        e.target.value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    });
 
-            submitBtn.textContent = '전송 중...';
-            submitBtn.disabled = true;
-            formStatus.textContent = '';
-            
-            try {
-                const response = await fetch('/api/contact', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    formStatus.textContent = result.message || '견적의뢰가 성공적으로 전송되었습니다.';
-                    formStatus.style.color = '#10b981';
-                    this.reset();
-                } else {
-                    formStatus.textContent = result.message || '전송 중 오류가 발생했습니다.';
-                    formStatus.style.color = '#ef4444';
-                }
-            } catch (error) {
-                console.error('Email submission error:', error);
-                formStatus.textContent = '서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.';
-                formStatus.style.color = '#ef4444';
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = '전송 중...';
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+            const result = await response.json();
+            formStatus.textContent = result.message;
+            formStatus.style.color = result.success ? 'green' : 'red';
+            if (result.success) form.reset();
+        } catch (error) {
+            formStatus.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+            formStatus.style.color = 'red';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '제출하기';
+        }
+    });
 }
 
-// Kakao Map Initialization
 function initLocationMap() {
-    const mapContainer = document.getElementById('map');
-    if (!mapContainer || typeof kakao === 'undefined' || !kakao.maps) return;
-
+    if (typeof kakao === 'undefined') return;
+    const container = document.getElementById('map');
     const options = {
         center: new kakao.maps.LatLng(37.4725, 127.0428),
         level: 3
     };
-
-    const map = new kakao.maps.Map(mapContainer, options);
-
-    const markerPosition  = new kakao.maps.LatLng(37.4725, 127.0428); 
-    const marker = new kakao.maps.Marker({
-        position: markerPosition
-    });
+    const map = new kakao.maps.Map(container, options);
+    const marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(37.4725, 127.0428) });
     marker.setMap(map);
+}
+
+const heroBackgrounds = ['배경1.jpg', '배경2_수정.jpg'];
+const heroTitles = [
+    '기술로 미래를 만든다?',
+    '더욱더 안전한 세상이 되도록<br>최선을 다하겠습니다'
+];
+const heroSubtitles = [
+    '㈜스마트계측은<br>AI를 활용한 자동화계측시스템 기술로<br>건설공사현장에서 안정적이며 정밀한 측정을 선두하는 기업입니다.',
+    '㈜스마트계측은<br>구조적 위험으로부터 공공의 안전을 지키며<br>사회에 일조하는 기업이 되겠습니다.'
+];
+let currentHeroBg = 0;
+
+function setHeroContent(index) {
+    const hero = document.getElementById('home');
+    const title = document.querySelector('.hero-title');
+    const subtitle = document.querySelector('.hero-subtitle');
+    hero.style.backgroundImage = `url('${heroBackgrounds[index]}')`;
+    title.innerHTML = heroTitles[index];
+    subtitle.innerHTML = heroSubtitles[index];
+}
+
+function startHeroBgSlider() {
+    setHeroContent(currentHeroBg);
+    const nextBtn = document.getElementById('heroNextBtn');
+    const prevBtn = document.getElementById('heroPrevBtn');
+
+    let slideInterval = setInterval(() => {
+        currentHeroBg = (currentHeroBg + 1) % heroBackgrounds.length;
+        setHeroContent(currentHeroBg);
+    }, 7000);
+
+    const resetInterval = () => {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(() => {
+            currentHeroBg = (currentHeroBg + 1) % heroBackgrounds.length;
+            setHeroContent(currentHeroBg);
+        }, 7000);
+    };
+
+    nextBtn.addEventListener('click', () => {
+        currentHeroBg = (currentHeroBg + 1) % heroBackgrounds.length;
+        setHeroContent(currentHeroBg);
+        resetInterval();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentHeroBg = (currentHeroBg - 1 + heroBackgrounds.length) % heroBackgrounds.length;
+        setHeroContent(currentHeroBg);
+        resetInterval();
+    });
 } 
