@@ -138,79 +138,16 @@ npm start
 ### 콘텐츠 수정
 `index.html` 파일에서 텍스트와 이미지를 수정할 수 있습니다.
 
-### 애니메이션 조정
-`script.js` 파일에서 애니메이션 타이밍과 효과를 조정할 수 있습니다.
+## 📞 연락처
 
-## 📞 연락처 정보
-
-- **주소**: 서울특별시 서초구 마방로10길 18-28, 삼우빌딩 4층
-- **전화번호**: 02-6409-7192
-- **영업시간**: 평일 09:00 - 18:00
+- **회사명**: (주)스마트계측
+- **이메일**: pung71@naver.com
+- **전화**: 010-8630-0413
 
 ## 📄 라이선스
 
-이 프로젝트는 (주)스마트계측의 공식 홈페이지입니다.
-
-## 🤝 기여
-
-프로젝트 개선을 위한 제안사항이 있으시면 언제든지 연락주세요.
+이 프로젝트는 (주)스마트계측의 소유입니다.
 
 ---
 
-**© 2024 (주)스마트계측. All rights reserved.** 
-
----
-
-### 정리
-- **public/automation.html** 파일에서  
-- `<div class="solution-image-bar" ...>` 안에  
-  - `솔루션_0716-1.jpg` 이미지와  
-  - 그 위에 "Solution" 글씨가  
-    ```html
-    <span style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); ...">Solution</span>
-    ```
-    이렇게 **이미지의 정가운데**에 위치하고 있습니다.
-
----
-
-## "Solution" 글씨를 3cm(113.4px) 아래로 내리는 방법
-
-- 현재 `top:50%`이므로,  
-- `top:calc(50% + 113.4px)`로 바꿔주면  
-- **정확히 3cm 아래**로 이동합니다.
-
----
-
-### 수정 예시
-
-```html
-<span style="position:absolute; left:50%; top:calc(50% + 113.4px); transform:translate(-50%,-50%); font-size:2.8rem; color:#FFD700; font-weight:900; font-family:Arial,sans-serif; letter-spacing:0.08em; text-shadow:2px 2px 8px rgba(0,0,0,0.18); pointer-events:none; user-select:none;">Solution</span>
-```
-
----
-
-### 적용 방법
-
-1. **public/automation.html** 파일에서  
-   위 `<span ...>Solution</span>` 부분의  firebase deploy --only hosting
-
-   `top:50%` → `top:calc(50% + 113.4px)`  
-   으로 변경하세요.
-
-2. 저장 후,  
-   `firebase deploy --only hosting`  
-   명령어로 배포하세요.
-
-3. 웹에서 새로고침(캐시 무시: Ctrl+F5) 후  
-   "Solution" 글씨가 3cm 아래로 내려갔는지 확인하세요.
-
----
-
-#### 중앙 정렬 유지 여부
-- 이 방식은 **가로 중앙**은 그대로 유지되고  
-- **세로만 3cm(113.4px) 아래**로 이동합니다.
-
----
-
-**적용 후에도 궁금한 점이 있으면 언제든 말씀해 주세요!**  
-(원하시면 직접 코드 수정도 바로 도와드릴 수 있습니다.) 
+*Copyright © 2024 (주)스마트계측. All rights reserved.* 

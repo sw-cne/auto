@@ -1,159 +1,190 @@
-document.addEventListener('DOMContentLoaded', function() {
-    initMobileNav();
-    initSmoothScrolling();
-    initNavbarScroll();
-    initScrollAnimations();
-    initContactForm();
-    initLocationMap();
-    startHeroBgSlider();
-});
-
-function initMobileNav() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
-    document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    }));
-}
-
-function initSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 70,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-function initNavbarScroll() {
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-}
-
-function initScrollAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.service-card, .request-card').forEach(el => observer.observe(el));
-}
-
-function initContactForm() {
-    const form = document.getElementById('contactForm');
-    const formStatus = document.getElementById('form-status');
-    const phoneInput = document.getElementById('phone');
-
-    phoneInput.addEventListener('keyup', (e) => {
-        let value = e.target.value.replace(/[^0-9]/g, '');
-        if (value.length > 11) value = value.substring(0, 11);
-        e.target.value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-    });
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-        submitBtn.textContent = '전송 중...';
-
-        try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                body: new FormData(form)
-            });
-            const result = await response.json();
-            formStatus.textContent = result.message;
-            formStatus.style.color = result.success ? 'green' : 'red';
-            if (result.success) form.reset();
-        } catch (error) {
-            formStatus.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-            formStatus.style.color = 'red';
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = '제출하기';
-        }
-    });
-}
-
-function initLocationMap() {
-    if (typeof kakao === 'undefined') return;
-    const container = document.getElementById('map');
-    const options = {
-        center: new kakao.maps.LatLng(37.4725, 127.0428),
-        level: 3
-    };
-    const map = new kakao.maps.Map(container, options);
-    const marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(37.4725, 127.0428) });
-    marker.setMap(map);
-}
-
-const heroBackgrounds = ['배경1.jpg', '배경2_수정.jpg'];
+// 홈 배경 및 메시지 슬라이드
+const heroBackgrounds = [
+  '배경1.jpg',
+  '배경2_수정.jpg'
+];
 const heroTitles = [
-    '기술로 미래를 만든다?',
-    '더욱더 안전한 세상이 되도록<br>최선을 다하겠습니다'
+  '기술로 미래를 만든다?',
+  ''
 ];
 const heroSubtitles = [
-    '㈜스마트계측은<br>AI를 활용한 자동화계측시스템 기술로<br>건설공사현장에서 안정적이며 정밀한 측정을 선두하는 기업입니다.',
-    '㈜스마트계측은<br>구조적 위험으로부터 공공의 안전을 지키며<br>사회에 일조하는 기업이 되겠습니다.'
+  '㈜스마트계측은<br>AI를 활용한 자동화계측시스템 기술로<br>건설공사현장에서 안정적이며 정밀한 측정을 선두하는 기업입니다.',
+  '㈜스마트계측은<br>구조적 위험으로부터 공공의 안전을 지키며<br>사회에 일조하는 기업이 되겠습니다.'
 ];
-let currentHeroBg = 0;
 
-function setHeroContent(index) {
-    const hero = document.getElementById('home');
-    const title = document.querySelector('.hero-title');
-    const subtitle = document.querySelector('.hero-subtitle');
-    hero.style.backgroundImage = `url('${heroBackgrounds[index]}')`;
-    title.innerHTML = heroTitles[index];
-    subtitle.innerHTML = heroSubtitles[index];
+let heroIndex = 0;
+function updateHero() {
+  const hero = document.querySelector('.hero');
+  const title = document.querySelector('.hero-title');
+  const subtitle = document.querySelector('.hero-subtitle');
+  if (hero && title && subtitle) {
+    hero.style.backgroundImage = `url('${heroBackgrounds[heroIndex]}')`;
+    title.innerHTML = heroTitles[heroIndex] || '';
+    subtitle.innerHTML = heroSubtitles[heroIndex];
+  }
 }
 
-function startHeroBgSlider() {
-    setHeroContent(currentHeroBg);
-    const nextBtn = document.getElementById('heroNextBtn');
-    const prevBtn = document.getElementById('heroPrevBtn');
+// 페이지 로드 후 실행
+document.addEventListener('DOMContentLoaded', () => {
+  // 홈 배경 슬라이드 시작
+  updateHero();
+  setInterval(() => {
+    heroIndex = (heroIndex + 1) % heroBackgrounds.length;
+    updateHero();
+  }, 7000);
 
-    let slideInterval = setInterval(() => {
-        currentHeroBg = (currentHeroBg + 1) % heroBackgrounds.length;
-        setHeroContent(currentHeroBg);
-    }, 7000);
+  // 견적의뢰 폼 초기화
+  initContactForm();
+  
+  // 전화번호 자동 포맷팅
+  initPhoneFormatting();
+});
 
-    const resetInterval = () => {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(() => {
-            currentHeroBg = (currentHeroBg + 1) % heroBackgrounds.length;
-            setHeroContent(currentHeroBg);
-        }, 7000);
-    };
+// 견적의뢰 폼 처리 (서버 API 사용)
+function initContactForm() {
+  const form = document.getElementById('contactForm');
+  const formStatus = document.getElementById('form-status');
+  
+  if (!form || !formStatus) return;
 
-    nextBtn.addEventListener('click', () => {
-        currentHeroBg = (currentHeroBg + 1) % heroBackgrounds.length;
-        setHeroContent(currentHeroBg);
-        resetInterval();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '전송 중...';
+    
+    // 폼 데이터 수집
+    const formData = new FormData(form);
+    
+    try {
+      // 서버로 POST 요청 전송
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const result = await response.json();
+      
+      // 결과 메시지 표시
+      if (result.success) {
+        formStatus.innerHTML = '<div style="color: green; font-weight: bold;">✅ 견적의뢰가 성공적으로 전송되었습니다!</div>';
+        form.reset(); // 폼 초기화
+      } else {
+        formStatus.innerHTML = '<div style="color: red; font-weight: bold;">❌ 전송 중 오류가 발생했습니다: ' + (result.message || '알 수 없는 오류') + '</div>';
+      }
+    } catch (error) {
+      console.error('폼 전송 오류:', error);
+      formStatus.innerHTML = '<div style="color: red; font-weight: bold;">❌ 네트워크 오류가 발생했습니다. 다시 시도해주세요.</div>';
+    } finally {
+      // 버튼 복원
+      submitBtn.disabled = false;
+      submitBtn.textContent = '제출하기';
+    }
+  });
+}
+
+// 전화번호 자동 포맷팅 (000-0000-0000)
+function initPhoneFormatting() {
+  const phoneInput = document.getElementById('phone');
+  if (!phoneInput) return;
+
+  phoneInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+    
+    if (value.length <= 11) {
+      // 000-0000-0000 형식으로 포맷팅
+      if (value.length > 7) {
+        value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+      } else if (value.length > 3) {
+        value = value.replace(/(\d{3})(\d{4})/, '$1-$2');
+      }
+    } else {
+      value = value.substring(0, 11);
+      value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    }
+    
+    e.target.value = value;
+  });
+}
+
+// 네비게이션 메뉴 토글
+function initMobileNav() {
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.nav-menu');
+  
+  if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
     });
+  }
+}
 
-    prevBtn.addEventListener('click', () => {
-        currentHeroBg = (currentHeroBg - 1 + heroBackgrounds.length) % heroBackgrounds.length;
-        setHeroContent(currentHeroBg);
-        resetInterval();
+// 부드러운 스크롤
+function initSmoothScrolling() {
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetSection = document.querySelector(targetId);
+      
+      if (targetSection) {
+        const offsetTop = targetSection.offsetTop - 80;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
     });
-} 
+  });
+}
+
+// 모든 기능 초기화
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileNav();
+  initSmoothScrolling();
+  initContactForm();
+  initPhoneFormatting();
+});
+
+// Google Maps 초기화
+function initMap() {
+  const mapElement = document.getElementById('map');
+  if (!mapElement) return;
+
+  const location = { lat: 37.5665, lng: 126.9780 }; // 서울시청 좌표
+  
+  const map = new google.maps.Map(mapElement, {
+    zoom: 15,
+    center: location,
+    styles: [
+      {
+        "featureType": "all",
+        "elementType": "geometry.fill",
+        "stylers": [{"weight": "2.00"}]
+      },
+      {
+        "featureType": "all",
+        "elementType": "geometry.stroke",
+        "stylers": [{"color": "#9c9c9c"}]
+      },
+      {
+        "featureType": "all",
+        "elementType": "labels.text",
+        "stylers": [{"visibility": "on"}]
+      }
+    ]
+  });
+  
+  new google.maps.Marker({
+    position: location,
+    map: map,
+    title: '(주)스마트계측'
+  });
+}
+
+// Google Maps API 로드 완료 시 호출될 콜백
+window.initMap = initMap;
