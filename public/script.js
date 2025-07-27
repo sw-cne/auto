@@ -150,41 +150,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initPhoneFormatting();
 });
 
-// Google Maps 초기화
-function initMap() {
-  const mapElement = document.getElementById('map');
-  if (!mapElement) return;
-
-  const location = { lat: 37.5665, lng: 126.9780 }; // 서울시청 좌표
-  
-  const map = new google.maps.Map(mapElement, {
-    zoom: 15,
-    center: location,
-    styles: [
-      {
-        "featureType": "all",
-        "elementType": "geometry.fill",
-        "stylers": [{"weight": "2.00"}]
-      },
-      {
-        "featureType": "all",
-        "elementType": "geometry.stroke",
-        "stylers": [{"color": "#9c9c9c"}]
-      },
-      {
-        "featureType": "all",
-        "elementType": "labels.text",
-        "stylers": [{"visibility": "on"}]
-      }
-    ]
-  });
-  
-  new google.maps.Marker({
-    position: location,
-    map: map,
-    title: '(주)스마트계측'
-  });
-}
-
-// Google Maps API 로드 완료 시 호출될 콜백
-window.initMap = initMap;
+// 지도는 HTML iframe으로 처리됨
