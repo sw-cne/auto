@@ -44,28 +44,28 @@ document.addEventListener('DOMContentLoaded', () => {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const formStatus = document.getElementById('form-status');
-  
+
   if (!form || !formStatus) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.textContent = '전송 중...';
-    
+
     // 폼 데이터 수집
     const formData = new FormData(form);
-    
+
     try {
       // 서버로 POST 요청 전송
       const response = await fetch('/api/contact', {
         method: 'POST',
         body: formData
       });
-      
+
       const result = await response.json();
-      
+
       // 결과 메시지 표시
       if (result.success) {
         formStatus.innerHTML = '<div style="color: green; font-weight: bold;">✅ 견적의뢰가 성공적으로 전송되었습니다!</div>';
@@ -88,7 +88,7 @@ function initContactForm() {
 function initMobileNav() {
   const hamburger = document.querySelector('.hamburger');
   const navMenu = document.querySelector('.nav-menu');
-  
+
   if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('active');
@@ -100,13 +100,13 @@ function initMobileNav() {
 // 부드러운 스크롤
 function initSmoothScrolling() {
   const navLinks = document.querySelectorAll('.nav-link');
-  
+
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const targetId = this.getAttribute('href');
       const targetSection = document.querySelector(targetId);
-      
+
       if (targetSection) {
         const offsetTop = targetSection.offsetTop - 80;
         window.scrollTo({
@@ -125,7 +125,7 @@ function initPhoneFormatting() {
 
   phoneInput.addEventListener('input', (e) => {
     let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
-    
+
     if (value.length <= 11) {
       // 000-0000-0000 형식으로 포맷팅
       if (value.length > 7) {
@@ -137,7 +137,7 @@ function initPhoneFormatting() {
       value = value.substring(0, 11);
       value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     }
-    
+
     e.target.value = value;
   });
 }
