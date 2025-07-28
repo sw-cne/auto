@@ -1,5 +1,3 @@
-console.log('--- SCRIPT VERSION: 2025.07.28-DEBUG ---');
-
 // 홈 배경 및 메시지 슬라이드
 const heroBackgrounds = [
   '배경1.jpg',
@@ -44,24 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 견적의뢰 폼 처리 (서버 API 사용)
 function initContactForm() {
-  console.log('Attempting to initialize contact form...');
   const form = document.getElementById('contactForm');
   const formStatus = document.getElementById('form-status');
   
-  if (!form) {
-    console.error('CRITICAL: Contact form (#contactForm) not found.');
-    return;
-  }
-  if (!formStatus) {
-    console.error('CRITICAL: Form status container (#form-status) not found.');
-    return;
-  }
-  
-  console.log('Contact form and status container found. Adding event listener.');
+  if (!form || !formStatus) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    console.log('FORM SUBMITTED. Sending request to server...');
     
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
