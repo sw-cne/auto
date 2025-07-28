@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const formStatus = document.getElementById('form-status');
-
+  // version: 1.1
   if (!form || !formStatus) return;
 
   form.addEventListener('submit', async (e) => {
