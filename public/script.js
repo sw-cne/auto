@@ -1,7 +1,7 @@
 // 홈 배경 및 메시지 슬라이드
 const heroBackgrounds = [
-  '배경1.jpg',
-  '배경2_수정.jpg'
+  'hero1.jpg',
+  'hero2.jpg'
 ];
 const heroTitles = [
   '기술로 미래를 만든다?',
