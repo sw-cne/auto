@@ -1,29 +1,11 @@
 const nodemailer = require('nodemailer');
 const formidable = require('formidable');
 
-// Vercel 환경에서는 req.body를 자동으로 파싱하지 않으므로, formidable을 사용해 수동으로 파싱합니다.
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
-
-const transporter = nodemailer.createTransport({
-    host: 'smtp.naver.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.NAVER_EMAIL,
-        pass: process.env.NAVER_PASSWORD,
-    },
-});
-
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, message: 'Method Not Allowed' });
     }
 
-    // 환경 변수 확인
     if (!process.env.NAVER_EMAIL || !process.env.NAVER_PASSWORD || !process.env.RECIPIENT_EMAIL) {
         console.error('CRITICAL: Server environment variables are not set.');
         return res.status(500).json({
@@ -31,6 +13,16 @@ export default async function handler(req, res) {
             message: '서버 환경 설정에 오류가 발생했습니다. 관리자에게 문의해주세요.',
         });
     }
+
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.naver.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NAVER_EMAIL,
+            pass: process.env.NAVER_PASSWORD,
+        },
+    });
 
     const form = formidable({});
 
@@ -70,9 +62,8 @@ export default async function handler(req, res) {
             }] : [],
         };
 
-        const info = await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
 
-        console.log('Email sent successfully:', info.messageId);
         res.status(200).json({
             success: true,
             message: '견적의뢰가 성공적으로 전송되었습니다. 감사합니다.',
@@ -86,4 +77,12 @@ export default async function handler(req, res) {
             error: error.message,
         });
     }
-} 
+}
+
+module.exports = handler;
+
+module.exports.config = {
+    api: {
+        bodyParser: false,
+    },
+}; 
