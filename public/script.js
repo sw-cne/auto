@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHero();
   }, 7000);
 
-  // 견적의뢰 폼 초기화
+  // 모든 기능 초기화
+  initMobileNav();
+  initSmoothScrolling();
   initContactForm();
-  
-  // 전화번호 자동 포맷팅
   initPhoneFormatting();
 });
 
@@ -84,30 +84,6 @@ function initContactForm() {
   });
 }
 
-// 전화번호 자동 포맷팅 (000-0000-0000)
-function initPhoneFormatting() {
-  const phoneInput = document.getElementById('phone');
-  if (!phoneInput) return;
-
-  phoneInput.addEventListener('input', (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
-    
-    if (value.length <= 11) {
-      // 000-0000-0000 형식으로 포맷팅
-      if (value.length > 7) {
-        value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-      } else if (value.length > 3) {
-        value = value.replace(/(\d{3})(\d{4})/, '$1-$2');
-      }
-    } else {
-      value = value.substring(0, 11);
-      value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-    }
-    
-    e.target.value = value;
-  });
-}
-
 // 네비게이션 메뉴 토글
 function initMobileNav() {
   const hamburger = document.querySelector('.hamburger');
@@ -142,12 +118,28 @@ function initSmoothScrolling() {
   });
 }
 
-// 모든 기능 초기화
-document.addEventListener('DOMContentLoaded', () => {
-  initMobileNav();
-  initSmoothScrolling();
-  initContactForm();
-  initPhoneFormatting();
-});
+// 전화번호 자동 포맷팅 (000-0000-0000)
+function initPhoneFormatting() {
+  const phoneInput = document.getElementById('phone');
+  if (!phoneInput) return;
+
+  phoneInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+    
+    if (value.length <= 11) {
+      // 000-0000-0000 형식으로 포맷팅
+      if (value.length > 7) {
+        value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+      } else if (value.length > 3) {
+        value = value.replace(/(\d{3})(\d{4})/, '$1-$2');
+      }
+    } else {
+      value = value.substring(0, 11);
+      value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    }
+    
+    e.target.value = value;
+  });
+}
 
 // 지도는 HTML iframe으로 처리됨
