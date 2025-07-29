@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
         const attachmentFile = files.attachment?.[0];
 
         // Basic validation
-        if (!name || !email || !message) {
+        if (!name || !email || !phone || !message) {
             console.warn('[API_CONTACT] Validation failed. Missing required fields.');
             return res.status(400).json({ success: false, message: '필수 입력 필드가 누락되었습니다.' });
         }
