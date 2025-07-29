@@ -32,6 +32,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://port-0-node-express-md2br0ble6279541.sel5.cloudtype.app"
-  }
+    "url": "git+https://github.com/sw-cne/auto.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sw-cne/auto/issues"
+  },
+  "homepage": "https://github.com/sw-cne/auto#readme"
 }
