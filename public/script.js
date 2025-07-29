@@ -38,7 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScrolling();
   initContactForm();
   initPhoneFormatting();
+  initFileInputHandler(); // 파일 입력 핸들러 추가
 });
+
+// 파일 입력 핸들러
+function initFileInputHandler() {
+  const attachmentInput = document.getElementById('attachment');
+  const fileNameDisplay = document.getElementById('file-name-display');
+  const removeBtn = document.getElementById('remove-attachment-btn');
+
+  if (!attachmentInput || !fileNameDisplay || !removeBtn) return;
+
+  attachmentInput.addEventListener('change', () => {
+    if (attachmentInput.files.length > 0) {
+      const file = attachmentInput.files[0];
+      fileNameDisplay.textContent = file.name;
+      removeBtn.style.display = 'inline-block';
+    } else {
+      fileNameDisplay.textContent = '';
+      removeBtn.style.display = 'none';
+    }
+  });
+
+  removeBtn.addEventListener('click', () => {
+    attachmentInput.value = ''; // 파일 선택 초기화
+    fileNameDisplay.textContent = '';
+    removeBtn.style.display = 'none';
+    // 파일 크기 오류 메시지도 지워주는 것이 좋음
+    const formStatus = document.getElementById('form-status');
+    if (formStatus.textContent.includes('파일 크기가 너무 큽니다')) {
+        formStatus.innerHTML = '';
+    }
+  });
+}
 
 // 견적의뢰 폼 처리 (서버 API 사용)
 function initContactForm() {
