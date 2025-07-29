@@ -72,20 +72,24 @@ function initFileInputHandler() {
   });
 }
 
+// 견적의뢰 폼 초기화 중복 실행을 방지하기 위한 전역 플래그
+let isContactFormInitialized = false;
+
 // 견적의뢰 폼 처리 (서버 API 사용)
 function initContactForm() {
+  // 만약 이 함수가 이미 한번 실행되었다면, 중복으로 이벤트 리스너가 등록되는 것을 막기 위해 즉시 중단
+  if (isContactFormInitialized) {
+    return;
+  }
+  isContactFormInitialized = true; // 최초 실행 시 플래그 설정
+
   const form = document.getElementById('contactForm');
   const formStatus = document.getElementById('form-status');
-  // version: 1.1
   if (!form || !formStatus) return;
 
   let isSubmitting = false;
 
-  // 기존에 등록된 이벤트 리스너를 확실하게 제거 (매우 중요)
-  const newForm = form.cloneNode(true);
-  form.parentNode.replaceChild(newForm, form);
-
-  newForm.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (isSubmitting) {
@@ -94,11 +98,11 @@ function initContactForm() {
     }
 
     isSubmitting = true;
-    const submitBtn = newForm.querySelector('button[type="submit"]');
+    const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.textContent = '전송 중...';
 
-    const attachmentInput = newForm.querySelector('#attachment');
+    const attachmentInput = document.getElementById('attachment');
     const maxFileSize = 4.5 * 1024 * 1024;
 
     if (attachmentInput.files.length > 0) {
@@ -113,7 +117,7 @@ function initContactForm() {
       }
     }
 
-    const formData = new FormData(newForm);
+    const formData = new FormData(form);
 
     try {
       const response = await fetch('/api/contact', {
@@ -125,7 +129,7 @@ function initContactForm() {
 
       if (result.success) {
         formStatus.innerHTML = '<div style="color: green; font-weight: bold;">✅ 견적의뢰가 성공적으로 전송되었습니다!</div>';
-        newForm.reset();
+        form.reset();
         document.getElementById('file-name-display').textContent = '';
         document.getElementById('remove-attachment-btn').style.display = 'none';
       } else {
