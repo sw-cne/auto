@@ -81,7 +81,11 @@ function initContactForm() {
 
   let isSubmitting = false;
 
-  form.addEventListener('submit', async (e) => {
+  // 기존에 등록된 이벤트 리스너를 확실하게 제거 (매우 중요)
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+
+  newForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (isSubmitting) {
@@ -89,12 +93,12 @@ function initContactForm() {
       return;
     }
 
-    isSubmitting = true; // 클릭 즉시 잠금
-    const submitBtn = form.querySelector('button[type="submit"]');
+    isSubmitting = true;
+    const submitBtn = newForm.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.textContent = '전송 중...';
 
-    const attachmentInput = document.getElementById('attachment');
+    const attachmentInput = newForm.querySelector('#attachment');
     const maxFileSize = 4.5 * 1024 * 1024;
 
     if (attachmentInput.files.length > 0) {
@@ -102,7 +106,6 @@ function initContactForm() {
       if (file.size > maxFileSize) {
         formStatus.innerHTML = `<div style="color: red; font-weight: bold;">❌ 파일 크기가 너무 큽니다. (최대 4.5MB)</div>`;
 
-        // 오류 발생 시 잠금 해제
         submitBtn.disabled = false;
         submitBtn.textContent = '제출하기';
         isSubmitting = false;
@@ -110,7 +113,7 @@ function initContactForm() {
       }
     }
 
-    const formData = new FormData(form);
+    const formData = new FormData(newForm);
 
     try {
       const response = await fetch('/api/contact', {
@@ -122,8 +125,7 @@ function initContactForm() {
 
       if (result.success) {
         formStatus.innerHTML = '<div style="color: green; font-weight: bold;">✅ 견적의뢰가 성공적으로 전송되었습니다!</div>';
-        form.reset();
-        // 폼 리셋 후 파일 삭제 버튼도 숨김 처리
+        newForm.reset();
         document.getElementById('file-name-display').textContent = '';
         document.getElementById('remove-attachment-btn').style.display = 'none';
       } else {
@@ -133,7 +135,6 @@ function initContactForm() {
       console.error('폼 전송 오류:', error);
       formStatus.innerHTML = '<div style="color: red; font-weight: bold;">❌ 네트워크 오류가 발생했습니다. 다시 시도해주세요.</div>';
     } finally {
-      // finally 블록에서는 성공/실패와 관계없이 항상 잠금 해제
       isSubmitting = false;
       submitBtn.disabled = false;
       submitBtn.textContent = '제출하기';
