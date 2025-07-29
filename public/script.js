@@ -47,9 +47,25 @@ function initContactForm() {
   // version: 1.1
   if (!form || !formStatus) return;
 
+  let isSubmitting = false; // 중복 제출 방지 플래그
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    if (isSubmitting) return; // 이미 제출 중이면 중복 실행 방지
+
+    const attachmentInput = document.getElementById('attachment');
+    const maxFileSize = 4.5 * 1024 * 1024; // Vercel 무료 플랜 제한: 4.5MB
+
+    if (attachmentInput.files.length > 0) {
+      const file = attachmentInput.files[0];
+      if (file.size > maxFileSize) {
+        formStatus.innerHTML = `<div style="color: red; font-weight: bold;">❌ 파일 크기가 너무 큽니다. (최대 4.5MB)</div>`;
+        return; // 파일이 너무 크면 전송 중단
+      }
+    }
+
+    isSubmitting = true; // 제출 시작, 플래그 설정
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.textContent = '전송 중...';
@@ -78,6 +94,7 @@ function initContactForm() {
       formStatus.innerHTML = '<div style="color: red; font-weight: bold;">❌ 네트워크 오류가 발생했습니다. 다시 시도해주세요.</div>';
     } finally {
       // 버튼 복원
+      isSubmitting = false; // 제출 완료, 플래그 해제
       submitBtn.disabled = false;
       submitBtn.textContent = '제출하기';
     }
