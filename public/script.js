@@ -118,27 +118,38 @@ function initSmoothScrolling() {
   });
 }
 
-// 전화번호 자동 포맷팅 (000-0000-0000)
+// 전화번호 자동 포맷팅
 function initPhoneFormatting() {
   const phoneInput = document.getElementById('phone');
   if (!phoneInput) return;
 
   phoneInput.addEventListener('input', (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+    let value = e.target.value.replace(/[^0-9]/g, '');
+    let result = '';
 
-    if (value.length <= 11) {
-      // 000-0000-0000 형식으로 포맷팅
-      if (value.length > 7) {
-        value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-      } else if (value.length > 3) {
-        value = value.replace(/(\d{3})(\d{4})/, '$1-$2');
+    // 서울 지역번호(02) 처리
+    if (value.startsWith('02')) {
+      if (value.length < 3) {
+        result = value;
+      } else if (value.length < 6) {
+        result = `${value.substring(0, 2)}-${value.substring(2)}`;
+      } else if (value.length < 10) {
+        result = `${value.substring(0, 2)}-${value.substring(2, 5)}-${value.substring(5)}`;
+      } else {
+        result = `${value.substring(0, 2)}-${value.substring(2, 6)}-${value.substring(6, 10)}`;
       }
-    } else {
-      value = value.substring(0, 11);
-      value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    } else { // 그 외 번호 (휴대폰 등)
+      if (value.length < 4) {
+        result = value;
+      } else if (value.length < 8) {
+        result = `${value.substring(0, 3)}-${value.substring(3)}`;
+      } else if (value.length < 11) {
+        result = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}`;
+      } else {
+        result = `${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7, 11)}`;
+      }
     }
-
-    e.target.value = value;
+    e.target.value = result;
   });
 }
 
