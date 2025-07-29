@@ -162,6 +162,8 @@ function initMobileNav() {
 // 부드러운 스크롤
 function initSmoothScrolling() {
   const navLinks = document.querySelectorAll('.nav-link');
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.nav-menu');
 
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
@@ -170,7 +172,13 @@ function initSmoothScrolling() {
       const targetSection = document.querySelector(targetId);
 
       if (targetSection) {
-        const offsetTop = targetSection.offsetTop - 80;
+        // 모바일 메뉴가 활성화 상태이면 닫아준다.
+        if (navMenu.classList.contains('active')) {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+
+        const offsetTop = targetSection.offsetTop - 70; // 네비게이션바 높이를 고려
         window.scrollTo({
           top: offsetTop,
           behavior: 'smooth'
