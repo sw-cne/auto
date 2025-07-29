@@ -1644,3 +1644,164 @@ html {
 #earth, #asiaMap, #eastAsiaMap, #koreaMap, #seoulMap, #finalAddress {
   z-index: 2;
 }
+
+/* 
+==============================================
+    ★ 완벽 반응형 프로젝트 (2025.08.01) ★
+==============================================
+*/
+
+/* 1. 데스크탑 우선 (기본 스타일) - 현재 대부분의 스타일이 여기에 해당 */
+
+/* 2. 작은 데스크탑 및 가로모드 태블릿 (1200px 이하) */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    .nav-menu {
+        gap: 1.5rem;
+    }
+    .nav-link {
+        font-size: 1.2rem;
+    }
+}
+
+/* 3. 태블릿 (992px 이하) */
+@media (max-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+        padding: 0 2rem;
+    }
+    .hero-content {
+        order: 2;
+    }
+    .hero-visual {
+        order: 1;
+        margin-bottom: 2rem;
+    }
+    .hero-title {
+        font-size: 3rem;
+    }
+    .hero-subtitle {
+        font-size: 1.15rem;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+    .contact-form {
+        margin-top: 2rem;
+    }
+    .footer-section.footer-flex-row {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+}
+
+/* 4. 세로모드 태블릿 및 큰 핸드폰 (768px 이하) - 기존 스타일 보강 */
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    .navbar {
+        height: 70px;
+        padding: 0.5rem 0;
+    }
+    .nav-logo img {
+        height: 40px !important;
+    }
+    h1, .hero-title {
+        font-size: 2.5rem !important; /* !important로 우선순위 강화 */
+    }
+    h2, .section-title {
+        font-size: 2rem;
+    }
+    .hamburger {
+        display: flex;
+    }
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px; /* 네비게이션 바 높이와 일치 */
+        flex-direction: column;
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(5px);
+        width: 100%;
+        text-align: center;
+        transition: left 0.3s ease-in-out;
+        box-shadow: var(--shadow-lg);
+        padding: 2rem 0;
+        gap: 1.5rem;
+    }
+    .nav-menu.active {
+        left: 0;
+    }
+    .nav-link {
+        font-size: 1.5rem;
+    }
+    .hero {
+        min-height: auto;
+        padding: 5rem 0;
+    }
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    .about-features {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 5. 일반 핸드폰 (576px 이하) */
+@media (max-width: 576px) {
+    body {
+        padding-top: 60px;
+    }
+    .navbar {
+        height: 60px;
+    }
+    .nav-logo img {
+        height: 35px !important;
+    }
+    .nav-menu {
+        top: 60px;
+    }
+    h1, .hero-title {
+        font-size: 2rem !important;
+    }
+    h2, .section-title {
+        font-size: 1.75rem;
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    .contact-form, .feature, .service-card {
+        padding: 1.5rem;
+    }
+    .footer-contact-inline {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
