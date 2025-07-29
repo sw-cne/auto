@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
         });
     }
 
-    const form = formidable({});
+    const form = new formidable.IncomingForm();
 
     try {
         // Asynchronously parse the form data from the request
