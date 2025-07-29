@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
                 </p>
               </div>
             `,
-            attachments: attachmentFile ? [{
+            attachments: (attachmentFile && attachmentFile.originalFilename && attachmentFile.size > 0) ? [{
                 filename: attachmentFile.originalFilename,
                 path: attachmentFile.filepath,
                 contentType: attachmentFile.mimetype,
