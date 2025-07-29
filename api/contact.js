@@ -78,6 +78,7 @@ module.exports = async (req, res) => {
         const mailOptions = {
             from: `"스마트계측 웹사이트" <${process.env.NAVER_EMAIL}>`,
             to: process.env.RECIPIENT_EMAIL,
+            replyTo: email,
             subject: `[웹사이트 견적의뢰] ${name}님의 문의입니다.`,
             html: `
               <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
