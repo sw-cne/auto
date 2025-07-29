@@ -79,34 +79,40 @@ function initContactForm() {
   // version: 1.1
   if (!form || !formStatus) return;
 
-  let isSubmitting = false; // 중복 제출 방지 플래그
+  let isSubmitting = false;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (isSubmitting) return; // 이미 제출 중이면 중복 실행 방지
+    if (isSubmitting) {
+      console.log('중복 제출이 감지되어 차단되었습니다.');
+      return;
+    }
+
+    isSubmitting = true; // 클릭 즉시 잠금
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '전송 중...';
 
     const attachmentInput = document.getElementById('attachment');
-    const maxFileSize = 4.5 * 1024 * 1024; // Vercel 무료 플랜 제한: 4.5MB
+    const maxFileSize = 4.5 * 1024 * 1024;
 
     if (attachmentInput.files.length > 0) {
       const file = attachmentInput.files[0];
       if (file.size > maxFileSize) {
         formStatus.innerHTML = `<div style="color: red; font-weight: bold;">❌ 파일 크기가 너무 큽니다. (최대 4.5MB)</div>`;
-        return; // 파일이 너무 크면 전송 중단
+
+        // 오류 발생 시 잠금 해제
+        submitBtn.disabled = false;
+        submitBtn.textContent = '제출하기';
+        isSubmitting = false;
+        return;
       }
     }
 
-    isSubmitting = true; // 제출 시작, 플래그 설정
-    const submitBtn = form.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = '전송 중...';
-
-    // 폼 데이터 수집
     const formData = new FormData(form);
 
     try {
-      // 서버로 POST 요청 전송
       const response = await fetch('/api/contact', {
         method: 'POST',
         body: formData
@@ -114,10 +120,12 @@ function initContactForm() {
 
       const result = await response.json();
 
-      // 결과 메시지 표시
       if (result.success) {
         formStatus.innerHTML = '<div style="color: green; font-weight: bold;">✅ 견적의뢰가 성공적으로 전송되었습니다!</div>';
-        form.reset(); // 폼 초기화
+        form.reset();
+        // 폼 리셋 후 파일 삭제 버튼도 숨김 처리
+        document.getElementById('file-name-display').textContent = '';
+        document.getElementById('remove-attachment-btn').style.display = 'none';
       } else {
         formStatus.innerHTML = '<div style="color: red; font-weight: bold;">❌ 전송 중 오류가 발생했습니다: ' + (result.message || '알 수 없는 오류') + '</div>';
       }
@@ -125,8 +133,8 @@ function initContactForm() {
       console.error('폼 전송 오류:', error);
       formStatus.innerHTML = '<div style="color: red; font-weight: bold;">❌ 네트워크 오류가 발생했습니다. 다시 시도해주세요.</div>';
     } finally {
-      // 버튼 복원
-      isSubmitting = false; // 제출 완료, 플래그 해제
+      // finally 블록에서는 성공/실패와 관계없이 항상 잠금 해제
+      isSubmitting = false;
       submitBtn.disabled = false;
       submitBtn.textContent = '제출하기';
     }
