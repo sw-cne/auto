@@ -1672,6 +1672,11 @@ html {
     .hero-buttons .btn {
         flex-shrink: 0; /* 버튼이 내용물에 따라 줄어들지 않도록 함 */
     }
+
+    /* 제목 줄바꿈 방지 */
+    .hero-title {
+        white-space: nowrap;
+    }
 }
 
 /* 
