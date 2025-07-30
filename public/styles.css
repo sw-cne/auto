@@ -1646,7 +1646,7 @@ html {
 }
 
 /* PC에서는 모바일용 자막 숨기기 */
-.subtitle-mobile {
+.subtitle-mobile, .title-mobile {
     display: none;
 }
 
@@ -1654,11 +1654,16 @@ html {
     핸드폰 반응형 코드 (PC 영향 없음)
    ============================================== */
 @media (max-width: 768px) {
-    /* 핸드폰에서는 PC용 자막 숨기고 모바일용 보여주기 */
-    .subtitle-pc {
+    /* 제목 줄바꿈 방지 */
+    .hero-title {
+        white-space: normal; /* 모바일에서는 제목 줄바꿈 허용 */
+    }
+    
+    /* 핸드폰에서는 PC용 자막/제목 숨기고 모바일용 보여주기 */
+    .subtitle-pc, .title-pc {
         display: none;
     }
-    .subtitle-mobile {
+    .subtitle-mobile, .title-mobile {
         display: inline; /* 또는 block, 상황에 맞게 */
     }
 
@@ -1675,7 +1680,7 @@ html {
 
     /* 제목 줄바꿈 방지 */
     .hero-title {
-        white-space: nowrap;
+        white-space: normal;
     }
 }
 
