@@ -53,11 +53,11 @@ function initDynamicMobileContent() {
             solutionSubtitle.innerHTML = 'AI와 IoT 기반의 자동화 계측<br> 솔루션을 제공합니다';
         }
 
-        // '솔루션' 더보기 버튼 기능
-        setupLoadMore('services', 'service-card', '솔루션 더보기 ▼');
+        // '솔루션' 더보기 버튼 기능 - 섹션이 숨겨지므로 이 코드는 실행되지 않음
+        // setupLoadMore('services', 'service-card', '솔루션 더보기 ▼');
         
         // '견적의뢰' 더보기 버튼 기능
-        setupLoadMore('contact', 'request-card', '견적의뢰 더보기 ▼');
+        setupLoadMore('contact', 'request-card', '그 외 사용되는 분야 ▼');
     }
 }
 
@@ -77,8 +77,9 @@ function setupLoadMore(sectionId, cardClass, buttonText) {
         // 버튼 클릭 이벤트
         loadMoreBtn.addEventListener('click', () => {
             for (let i = 3; i < cards.length; i++) {
-                cards[i].style.display = 'flex';
+                cards[i].style.display = 'flex'; // 숨겨진 카드들을 보여줌
             }
+            grid.style.gridTemplateColumns = 'repeat(3, 1fr)'; // 3열 그리드 유지
             loadMoreBtn.style.display = 'none'; // 버튼 자신은 사라짐
         });
     }

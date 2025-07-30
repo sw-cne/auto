@@ -1742,6 +1742,16 @@ html {
         display: none;
     }
 
+    /* [추가] 모바일에서 CEO 인사말 숨기기 */
+    .ceo-message {
+        display: none;
+    }
+
+    /* [추가] 모바일에서 솔루션 섹션 전체 숨기기 */
+    #services {
+        display: none;
+    }
+
     /* [추가] 모바일에서 홈 화면 콘텐츠 중앙 정렬 */
     .hero {
         align-items: center; /* 수직 중앙 정렬 */
@@ -1780,6 +1790,32 @@ html {
         margin-top: auto;
     }
     
+    /* [수정] 견적의뢰 카드를 3열 그리드로 변경 */
+    .contact-requests-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem; /* 카드 사이 간격 최소화 */
+    }
+
+    .request-card {
+        padding: 1rem 0.5rem; /* 카드 내부 여백 조정 */
+        height: 180px; /* 카드 높이 고정 */
+        justify-content: flex-start;
+    }
+
+    .request-icon {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .request-card h4 {
+        font-size: 0.9rem;
+        line-height: 1.3;
+    }
+
+    .request-card p {
+        display: none; /* 모바일에서는 상세 설명 숨김 */
+    }
+
     /* [추가] 더보기 버튼 스타일 */
     .load-more-btn {
         background-color: var(--primary-color);
