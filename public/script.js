@@ -4,7 +4,7 @@ const heroBackgrounds = [
   'hero2.jpg'
 ];
 const heroTitles = [
-    "기술로 미래를 만든다?",
+    '<span class="title-pc">기술로 미래를 만든다?</span><span class="title-mobile">기술로 미래를 만든다?</span>',
     '<span class="title-pc">더욱더 안전한 세상이 되도록<br>최선을 다하겠습니다</span><span class="title-mobile">더룩더 안전한 세상이<br>되도록 최선을<br>다하겠습니다</span>'
 ];
 const heroSubtitles = [

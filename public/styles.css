@@ -1659,6 +1659,16 @@ html {
         white-space: normal; /* 모바일에서는 제목 줄바꿈 허용 */
     }
     
+    /* 모바일 제목/자막 글자 크기 조정 */
+    .hero-title, .title-mobile {
+        font-size: 1.5rem !important; /* 글자 크기 줄여서 줄바꿈 문제 해결 */
+        line-height: 1.4;
+    }
+    .hero-subtitle, .subtitle-mobile {
+        font-size: 0.85rem !important;
+        line-height: 1.5;
+    }
+
     /* 핸드폰에서는 PC용 자막/제목 숨기고 모바일용 보여주기 */
     .subtitle-pc, .title-pc {
         display: none;
@@ -1667,20 +1677,16 @@ html {
         display: inline; /* 또는 block, 상황에 맞게 */
     }
 
+    /* 버튼은 일단 그대로 둠 */
     .hero-buttons {
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap; /* 일단 wrap 허용 */
         justify-content: center;
         gap: 1rem; /* 버튼 사이의 간격 */
     }
 
     .hero-buttons .btn {
         flex-shrink: 0; /* 버튼이 내용물에 따라 줄어들지 않도록 함 */
-    }
-
-    /* 제목 줄바꿈 방지 */
-    .hero-title {
-        white-space: normal;
     }
 }
 
