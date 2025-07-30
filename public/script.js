@@ -5,7 +5,7 @@ const heroBackgrounds = [
 ];
 const heroTitles = [
     '<span class="title-pc">기술로 미래를 만든다?</span><span class="title-mobile">기술로 미래를 만든다?</span>',
-    '<span class="title-pc">더욱더 안전한 세상이 되도록<br>최선을 다하겠습니다</span><span class="title-mobile">더룩더 안전한 세상이<br>되도록 최선을<br>다하겠습니다</span>'
+    '<span class="title-pc">더욱더 안전한 세상이 되도록<br>최선을 다하겠습니다</span><span class="title-mobile">더룩더 안전한 세상이 되도록<br>최선을 다하겠습니다</span>'
 ];
 const heroSubtitles = [
     '<span class="subtitle-pc">㈜스마트계측은<br>AI를 활용한 자동화계측시스템 기술로<br>건설공사현장에서 안정적이며 정밀한 측정을 선두하는 기업입니다.</span><span class="subtitle-mobile">㈜스마트계측은<br>AI를 활용한 자동화계측시스템 기술로<br>건설공사현장에서 안정적이며<br>정밀한 측정을 선두하는<br>기업입니다.</span>',
