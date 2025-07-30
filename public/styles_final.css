@@ -970,10 +970,10 @@ p {
     }
 
     .nav-menu {
-        display: none; /* 기본적으로 메뉴를 완전히 숨겨서 다른 요소에 영향을 주지 않도록 함 */
+        display: none; /* [수정] 메뉴를 layout에서 완전히 제외하여 다른 요소에 영향을 주지 않도록 함 */
         position: fixed;
         left: 0;
-        top: 70px; /* 태블릿 높이 기준 */
+        top: 70px;
         flex-direction: column;
         background-color: white;
         width: 100%;
@@ -981,11 +981,10 @@ p {
         box-shadow: var(--shadow-lg);
         padding: 2rem 0;
         z-index: 1000;
-        height: calc(100vh - 70px);
     }
 
     .nav-menu.active {
-        display: flex; /* 삼지창 클릭 시 메뉴를 보여줌 */
+        display: flex; /* [수정] active 클래스가 추가되면 메뉴를 화면에 보여줌 */
     }
 
     .hero-container {
