@@ -1720,4 +1720,20 @@ html {
     .about-text strong {
         font-size: 1em; /* 주황색 강조 텍스트 크기를 주변 텍스트와 맞춤 */
     }
+
+    /* 회사소개, 솔루션, 견적의뢰 섹션 제목/부제목 스타일 통일 */
+    #about .section-title,
+    #services .section-title,
+    #contact .section-title {
+        font-size: 2.2rem; /* 제목 글자 크기 2단계 확대 */
+    }
+
+    #about .section-subtitle,
+    #services .section-subtitle,
+    #contact .section-subtitle {
+        font-size: 1.1rem; /* 부제목 글자 크기 조정 */
+        font-weight: 700;
+        color: #ff9800;
+        margin-bottom: 2rem; /* 부제목 아래 간격 추가 */
+    }
 }
