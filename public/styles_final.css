@@ -1741,4 +1741,64 @@ html {
     .about-features {
         display: none;
     }
+
+    /* [추가] 모바일에서 홈 화면 콘텐츠 중앙 정렬 */
+    .hero {
+        align-items: center; /* 수직 중앙 정렬 */
+        padding-top: 0; /* 기존 패딩 제거 */
+    }
+
+    /* [추가] 모바일 솔루션/견적의뢰 카드 디자인 축소 */
+    .service-card,
+    .request-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 1rem;
+        min-height: 0; /* 최소 높이 제거 */
+    }
+    
+    .service-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+    
+    .service-icon i {
+        font-size: 1.5rem;
+    }
+
+    .service-card h3,
+    .request-card h4 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .service-card p,
+    .request-card p {
+        font-size: 0.9rem;
+        margin-top: auto;
+    }
+    
+    /* [추가] 더보기 버튼 스타일 */
+    .load-more-btn {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 1rem;
+        display: block;
+        width: 100%;
+        max-width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    /* [추가] 기본적으로 숨길 카드들 */
+    .services-grid .service-card:nth-child(n+4),
+    .contact-requests-grid .request-card:nth-child(n+4) {
+        display: none;
+    }
 }

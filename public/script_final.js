@@ -39,7 +39,50 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initPhoneFormatting();
   initFileInputHandler(); // 파일 입력 핸들러 추가
+  initDynamicMobileContent(); // [추가] 모바일 전용 동적 콘텐츠 초기화
 });
+
+// [추가] 모바일 전용 동적 콘텐츠 설정
+function initDynamicMobileContent() {
+    // 화면 너비가 768px 이하일 때만 실행 (모바일)
+    if (window.innerWidth <= 768) {
+        
+        // '솔루션' 부제목 줄바꿈
+        const solutionSubtitle = document.querySelector('#services .section-subtitle');
+        if (solutionSubtitle) {
+            solutionSubtitle.innerHTML = 'AI와 IoT 기반의 자동화 계측<br> 솔루션을 제공합니다';
+        }
+
+        // '솔루션' 더보기 버튼 기능
+        setupLoadMore('services', 'service-card', '솔루션 더보기 ▼');
+        
+        // '견적의뢰' 더보기 버튼 기능
+        setupLoadMore('contact', 'request-card', '견적의뢰 더보기 ▼');
+    }
+}
+
+// [추가] 더보기 버튼 설정 함수
+function setupLoadMore(sectionId, cardClass, buttonText) {
+    const section = document.getElementById(sectionId);
+    const grid = section.querySelector(`.${cardClass.includes('service') ? 'services' : 'contact-requests'}-grid`);
+    const cards = grid.querySelectorAll(`.${cardClass}`);
+    
+    if (cards.length > 3) {
+        // 더보기 버튼 생성
+        const loadMoreBtn = document.createElement('div');
+        loadMoreBtn.classList.add('load-more-btn');
+        loadMoreBtn.textContent = buttonText;
+        grid.parentNode.insertBefore(loadMoreBtn, grid.nextSibling);
+
+        // 버튼 클릭 이벤트
+        loadMoreBtn.addEventListener('click', () => {
+            for (let i = 3; i < cards.length; i++) {
+                cards[i].style.display = 'flex';
+            }
+            loadMoreBtn.style.display = 'none'; // 버튼 자신은 사라짐
+        });
+    }
+}
 
 // 파일 입력 핸들러
 function initFileInputHandler() {
