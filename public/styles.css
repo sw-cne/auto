@@ -369,7 +369,7 @@ p {
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.1rem; /* PC버전 설명 문구 글자 크기 미세 조정 (줄바꿈 해결) */
     color: rgba(255, 255, 255, 1);
     margin-bottom: 2rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
