@@ -1736,4 +1736,9 @@ html {
         color: #ff9800;
         margin-bottom: 2rem; /* 부제목 아래 간격 추가 */
     }
+
+    /* [추가] 모바일에서 '정밀성, 혁신성, 신뢰성' 상자 숨기기 */
+    .about-features {
+        display: none;
+    }
 }
