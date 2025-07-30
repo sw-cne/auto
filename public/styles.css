@@ -1689,4 +1689,18 @@ html {
     .hero-buttons .btn {
         /* 버튼 크기 강제 조정 삭제 */
     }
+
+    /* 모바일 '회사소개' 섹션 스타일 조정 */
+    #about .section-subtitle {
+        font-size: 1.05rem; /* 글자 크기를 키우고 */
+        white-space: nowrap; /* 줄바꿈 방지 */
+    }
+
+    .about-text h3 {
+        font-size: 1.5rem; /* '스마트계측의 비젼' 글자 크기 줄임 */
+    }
+
+    .about-text strong {
+        font-size: 1em; /* 주황색 강조 텍스트 크기를 주변 텍스트와 맞춤 */
+    }
 }
