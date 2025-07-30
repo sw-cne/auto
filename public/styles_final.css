@@ -1816,14 +1816,15 @@ html {
         display: none; /* 모바일에서는 상세 설명 숨김 */
     }
 
-    /* [추가] 더보기 버튼 스타일 */
+    /* [수정] 더보기 버튼과 폼 사이 간격 조정 */
     .load-more-btn {
         background-color: var(--primary-color);
         color: white;
         padding: 10px 20px;
         border-radius: 8px;
         cursor: pointer;
-        margin-top: 1rem;
+        margin-top: 1rem; /* 카드와의 간격 */
+        margin-bottom: 2rem; /* 폼과의 간격 */
         display: block;
         width: 100%;
         max-width: 200px;
